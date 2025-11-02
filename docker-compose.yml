@@ -1,0 +1,35 @@
+
+#Indica la versión del formato de Docker Compose que se esta usando
+version: "3.8"
+
+#Define los servicios que se van a ejecutar. Cada servicio representa un contenedor independiente.
+services:
+
+  #Piensa en esto como “el servidor web de tu app Next.js”.
+  web:
+
+    #Le dice a Docker cómo construir la imagen del contenedor.
+    build:
+
+      #Usa la carpeta actual (donde está tu proyecto) como contexto. Es decir, todo lo que hay en . estará disponible durante el build.
+      context: .
+
+      #Usa el archivo Dockerfile para definir cómo se construye la imagen.
+      dockerfile: dockerfile
+
+    #Los volúmenes permiten compartir archivos entre tu máquina y el contenedor.
+    volumes:
+      #Monta tu carpeta local (el proyecto) dentro del contenedor. Eso significa que si cambias código en tu máquina, se reflejará automáticamente dentro del contenedor.
+      - ./:/app:cached #cached: le dice a Docker que optimice el rendimiento del volumen en sistemas como Windows
+      - /app/node_modules #Evita que tu carpeta local node_modules sobrescriba la del contenedor
+    ports:
+
+      #Conecta el puerto interno 3000 del contenedor con mi máquina en el puerto 3000
+      - "3000:3000" 
+    environment:
+
+      #Establece variables de entorno dentro del contenedor. Habilite el hot-reload (recarga en vivo). Muestre errores detallados.
+      - NODE_ENV=development
+
+    #Indica el comando que debe ejecutar el contenedor al arrancar.
+    command: npm run dev -- -H 0.0.0.0
