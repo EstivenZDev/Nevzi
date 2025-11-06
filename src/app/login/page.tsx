@@ -1,8 +1,9 @@
 "use client";
 
+import { getUserByEmail } from "@/services/user/user";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { sendEmail } from "@/services/sendEmail";
+
 
 
 export default function LoginPage() {
@@ -19,11 +20,20 @@ export default function LoginPage() {
       redirect: false,
     });
 
-    await sendEmail()
+    if (result?.error) {
+      alert("Correo o contraseña incorrectos");
+      console.log(result)
+      return;
+    }
 
-    window.location.href = "/dashboard";
+    if (result?.ok) {
+      window.location.href = "/dashboard";
+    }
 
-    console.log(result); // 👀 si algo falla, aquí lo verás en consola del navegador
+  };
+
+  const handleGoogleLogin = () => {
+    signIn("google", { callbackUrl: "/" });
   };
 
   return (
@@ -58,7 +68,16 @@ export default function LoginPage() {
               required
             />
           </div>
-
+          <button
+            onClick={handleGoogleLogin}
+            className="w-full bg-black text-white py-3 rounded-full font-semibold hover:bg-gray-900 transition flex justify-center gap-5"
+          >
+                      <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="Google"
+            className="w-5 h-5"
+          /> Iniciar sesion con Google
+          </button>
           <button
             type="submit"
             className="w-full bg-black text-white py-3 rounded-full font-semibold hover:bg-gray-900 transition"

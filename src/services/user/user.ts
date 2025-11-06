@@ -7,6 +7,11 @@ export const getUsers = async () => {
     return res.data
 }
 
+export const getUserByEmail = async (email) => {
+    const {data:{user}} = await axios.get(`/api/user?email=${encodeURIComponent(email)}`)
+    return user
+}
+
 export const createUsers = async ({name, email, password, role}:UserProps) => {
     try {
         const res = await axios.post("/api/user", {
