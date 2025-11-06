@@ -1,5 +1,5 @@
 import UsersModel from "@/database/models/user";
-import dbConnection from "@/lib/dbConnection";
+import {dbConnection} from "@/lib/dbConnection";
 import { UserProps } from "@/services/user/user.types";
 import { NextResponse } from "next/server";
 
@@ -33,6 +33,40 @@ export async function GET(req: Request) {
       { status: 500 }
     );
   }
+}
+
+
+export async function POST(req: Request) {
+  try {
+
+    await dbConnection()
+
+    const { name, email, password } = await req.json()
+
+    const userExisting = await UsersModel.findOne({ email })
+    if (userExisting) {
+
+      return NextResponse.json(
+        { message: "Usuario ya existente con este correo" },
+        { status: 400 }
+      )
+
+    } else {
+
+      await UsersModel.create({ name, email, password });
+
+    }
+
+    
+  } catch (err) {
+
+    return NextResponse.json(
+      {message: "Algo fallo ", err},
+      {status: 500}
+    )
+    
+  }
+
 }
 
 
