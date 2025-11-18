@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import ButtonBlack from '../../components/ButtonBlack/ButtonBlack';
 import Card from "@/components/CardProduct/Card";
+import Link from "next/link";
 
 export default function DashboardPage() {
   // const { data: session, status } = useSession();
@@ -52,8 +53,8 @@ export default function DashboardPage() {
 
   return (
     <>
-      <section className="bg-blue-600 p-10 flex flex-col gap-10">
-        <div className="bg-amber-200 flex justify-end">
+      <section className=" p-10 flex flex-col gap-10">
+        <div className= "flex justify-end">
           <ButtonBlack content="Create product" />
         </div>
         <div className="flex flex-wrap gap-8">
@@ -64,6 +65,8 @@ export default function DashboardPage() {
           ))}
         </div>
       </section>
+
+      <Link href={"/dashboard/createProducts"}>Crear productos</Link>
     </>
   );
 }

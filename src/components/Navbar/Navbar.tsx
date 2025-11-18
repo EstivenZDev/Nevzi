@@ -1,11 +1,13 @@
 "use client";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Menu, X, CircleUser, ShoppingCart, LogOut } from "lucide-react";
 import style from "./navbar.module.css";
 import { useSession, signOut } from "next-auth/react";
 import { Button } from "@heroui/react";
 import { CardProductCar } from "../CardProductCar/CardProductCar";
+import { ShoppingCartContext } from "@/context/ShoppingCarContext";
+import ButtonBlack from "../ButtonBlack/ButtonBlack";
 
 
 
@@ -21,6 +23,9 @@ export const Navbar = () => {
 
     const [counterProducts, setCounterProducts] = useState(0)
 
+    const context = useContext(ShoppingCartContext);
+    const { productsList, setProductsList, total, setTotal } = context;
+
     // 🔥 Cierra el menú si se agranda la pantalla a más de 900px
     useEffect(() => {
         const handleResize = () => {
@@ -35,6 +40,7 @@ export const Navbar = () => {
 
 
     return (
+        
         <nav className="relative w-full bg-white">
             <div className="px-40 flex justify-around items-center h-[70px]">
                 {/* Logo */}
@@ -88,22 +94,32 @@ export const Navbar = () => {
                                 ✕
                             </button>
 
-                            <div className="p-6 mt-8 flex justify-center flex-col ">
-                                <h2 className="text-2xl font-semibold mb-6 text-center">Tu carrito</h2>
-                                {/* className="space-y-4" */}
-                                {!session ? (
-                                    <h1 className="text-black">No estas registrado aun!</h1>
-                                ):(
-                                    <div>
-                                        <div className="flex justify-start"><h2 className="font-semibold">Productos({counterProducts})</h2></div>
-                                        <div className="flex flex-col gap-5">
-                                            <CardProductCar/>
+                            <div className="flex flex-col  h-full justify-between">
+                                <div className="p-6 mt-8 flex justify-center flex-col ">
+                                    <h2 className="text-2xl font-semibold mb-6 text-center">Tu carrito</h2>
+                                    {/* className="space-y-4" */}
+                                    {!session ? (
+                                        <h1 className="text-white p-4 bg-black rounded-md">Debes registrarte para poder pagar</h1>
+                                    ) : (
+                                        <div>
+                                            <div className="flex justify-start"><h2 className="font-semibold">Productos({counterProducts})</h2></div>
+                                            <div className="flex flex-col gap-5">
+                                                <CardProductCar />
+                                            </div>
                                         </div>
-                                    </div>
-                                )
+                                    )
 
-                                }
-                                
+                                    }
+
+                                </div>
+                                <div className=" p-5 flex justify-center flex-col items-center gap-10">
+                                    <div className="bg-white border-1 border-black text-black rounded-md w-auto flex justify-center p-3">
+                                        <span className="font-bold">{total} $</span>
+                                    </div>
+                                    <div className="flex justify-center">
+                                        <ButtonBlack content="Pagar"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -134,6 +150,7 @@ export const Navbar = () => {
             )}
         </nav>
     );
+    
 };
 
 export default Navbar;
