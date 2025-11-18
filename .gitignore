@@ -11,7 +11,7 @@
 !.yarn/versions
 
 # Cypress-related files and folders
-cypress/e2e
+/cypress
 
 # testing
 /coverage
