@@ -8,6 +8,7 @@ import { Button } from "@heroui/react";
 import { CardProductCar } from "../CardProductCar/CardProductCar";
 import { ShoppingCartContext } from "@/context/ShoppingCarContext";
 import ButtonBlack from "../ButtonBlack/ButtonBlack";
+import { useShoppingCart } from "@/hooks/useShoppingCart";
 
 
 
@@ -24,7 +25,8 @@ export const Navbar = () => {
     const [counterProducts, setCounterProducts] = useState(0)
 
     const context = useContext(ShoppingCartContext);
-    const { productsList, setProductsList, total, setTotal } = context;
+    const { productsList, setProductsList, total, setTotal } = useShoppingCart();
+
 
     // 🔥 Cierra el menú si se agranda la pantalla a más de 900px
     useEffect(() => {

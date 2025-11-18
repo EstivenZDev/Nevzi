@@ -1,11 +1,12 @@
 import { createContext, ReactNode, useState } from "react";
+import { ProductType } from "@/types/ProductType";
 
 // Tipo para el contexto
 export type ShoppingCartContextType = {
-    productsList: string[];
+    productsList: ProductType[];
     total: number;
-    setProductsList: (productsList: string[]) => void;
-    setTotal: (total: number) => void;
+    setProductsList: React.Dispatch<React.SetStateAction<ProductType[]>>;
+    setTotal: React.Dispatch<React.SetStateAction<number>>;
 };
 
 // Tipo para las props del Provider
@@ -14,11 +15,11 @@ type ShoppingCartProviderProps = {
 };
 
 // Crear el contexto
-export const ShoppingCartContext = createContext<ShoppingCartContextType | undefined>(undefined);
+export const ShoppingCartContext = createContext<ShoppingCartContextType | null>(null);
 
 // Provider component
 export const ShoppingCartProvider = ({ children }: ShoppingCartProviderProps) => {
-    const [productsList, setProductsList] = useState<string[]>([]);
+    const [productsList, setProductsList] = useState<ProductType[]>([]);
     const [total, setTotal] = useState<number>(0);
 
     return (
